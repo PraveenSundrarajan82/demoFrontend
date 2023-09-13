@@ -1,0 +1,93 @@
+<div *ngIf="viewMode; else editable">
+    <div *ngIf="currentDemo.id">
+      <h4>Demo</h4>
+      <div>
+        <label><strong>Title:</strong></label> {{ currentDemo.title }}
+      </div>
+      <div>
+        <label><strong>Description:</strong></label>
+        {{ currentDemo.description }}
+      </div>
+      <div>
+        <label><strong>Status:</strong></label>
+        {{ currentDemo.isLive ? "live" : "Pending" }}
+      </div>
+  
+      <a
+        style="color: green;"
+        routerLink="/demo/{{ currentDemo.id }}">
+        Edit
+      </a>
+    </div>
+  
+    <div *ngIf="!currentDemo">
+      <br />
+      <p>Please click on a Demo...</p>
+    </div>
+  </div>
+  
+  <ng-template #editable>
+    <div *ngIf="currentDemo.id" class="edit-form">
+      <h4>Demo</h4>
+      <form>
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            [(ngModel)]="currentDemo.title"
+            name="title"
+          />
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            id="description"
+            [(ngModel)]="currentDemo.description"
+            name="description"
+          />
+        </div>
+  
+        <div class="form-group">
+          <label><strong>Status:</strong></label>
+          {{ currentDemo.isLive ? "Live" : "Pending" }}
+        </div>
+      </form>
+  
+      <button
+        class="btn btn-primary mr-2"
+        *ngIf="currentDemo.isLive"
+        (click)="updatePublished(false)"
+      >
+        Revert
+      </button>&nbsp;
+      <button
+        *ngIf="!currentDemo.isLive"
+        class="btn btn-primary mr-2"
+        (click)="updatePublished(true)"
+      >
+        Live
+      </button>&nbsp;
+  
+      <button class="btn btn-danger" (click)="deleteDemo()">
+        Delete
+      </button>&nbsp;
+  
+      <button
+        type="submit"
+        class="btn btn-success"
+        (click)="updateDemo()"
+      >
+        Update
+      </button>&nbsp;
+      <p>{{ message }}</p>
+    </div>
+  
+    <div *ngIf="!currentDemo.id">
+      <br />
+      <p>Cannot access this Demo...</p>
+    </div>
+  </ng-template>
